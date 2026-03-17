@@ -1,19 +1,34 @@
-from vpython import sphere, color, scene, vector
+from vpython import box, vector, color, scene
 import math
 
 # გარშემოწირულობა კმ
 circumference_km = 300_000
 
-# რადიუსი
+# რადიუსი კილომეტრებში
 radius_km = circumference_km / (2 * math.pi)
 
-# შექმენი 3D ბურთი
-ball = sphere(
-    pos=vector(0,0,0),     # ცენტრი
-    radius=radius_km,       # რადიუსი
-    color=color.blue,       # ფერი
-    opacity=0.5             # ნახევრად გამჭვირვალე
-)
+# 1 მეტრი კუბის მხარის სიგრძე (კილომეტრებში)
+cube_size_km = 0.000001  # 1 მ ≈ 0.000001 კმ
 
-scene.title = "ბურთი გარშემოწირულობით 300,000 კმ"
+# სცენის პარამეტრები
+scene.title = "ბურთი 1მ კუბებით"
 scene.background = color.white
+
+# ბურთის შექმნა კუბებისგან
+# აქ ვამოწმებთ ყველა წერტილს გარე ყუთში (-r, r)
+# და ვამატებთ კუბს მხოლოდ თუ ის ბურთის შიგნითაა
+x_steps = int(radius_km / cube_size_km)
+for i in range(-x_steps, x_steps+1):
+    for j in range(-x_steps, x_steps+1):
+        for k in range(-x_steps, x_steps+1):
+            # კუბის ცენტრი
+            x = i * cube_size_km
+            y = j * cube_size_km
+            z = k * cube_size_km
+            # თუ კუბის ცენტრი ბურთის შიგნითაა
+            if math.sqrt(x**2 + y**2 + z**2) <= radius_km:
+                box(pos=vector(x, y, z),
+                    length=cube_size_km,
+                    height=cube_size_km,
+                    width=cube_size_km,
+                    color=color.blue)
