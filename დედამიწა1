@@ -1,0 +1,25 @@
+from vpython import box, vector, color, scene
+import math
+
+# ბურთის დიამეტრი
+diameter = 25000  # მეტრი
+radius = diameter / 2  # რადიუსი
+
+# კუბის ზომა
+cube_size = 1  # 1მ კუბი
+
+scene.title = f"ბურთი დიამეტრით {diameter}მ კუბებით"
+scene.background = color.white
+
+# ზედაპირული კუბები
+for x in range(-int(radius), int(radius)+1, cube_size):
+    for y in range(-int(radius), int(radius)+1, cube_size):
+        for z in range(-int(radius), int(radius)+1, cube_size):
+            # მხოლოდ ზედაპირული კუბები
+            dist = math.sqrt(x**2 + y**2 + z**2)
+            if radius - 0.5 <= dist <= radius + 0.5:
+                box(pos=vector(x, y, z),
+                    length=cube_size,
+                    height=cube_size,
+                    width=cube_size,
+                    color=color.blue)
